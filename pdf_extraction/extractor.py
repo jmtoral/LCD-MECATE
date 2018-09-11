@@ -1,7 +1,6 @@
 from glob import glob
 import pdftotext
 import re
-import io
 
 # Global:
 path_to_pdfs = "..."
@@ -19,13 +18,13 @@ def pdf_to_text(pdf_filename, to_text=False):
     """
 
     # Load PDF into raw text:
-    with io.open(pdf_filename, "rb") as f:
+    with open(pdf_filename, "r", encoding='utf8') as f:
         pdf = pdftotext.PDF(f)
         pdf_txt = "\n\n".join(pdf)
 
     # If specified, save PDF into txt:
     if to_text:
-        with io.open(pdf_filename[:-4] + '.txt', "w", encoding='utf8') as f:
+        with open(pdf_filename[:-4] + '.txt', "w", encoding='utf8') as f:
             f.write(pdf_txt)
     return pdf_txt
 
@@ -44,7 +43,7 @@ def extract_contracts(pdf_filename, to_text=False, cont_list=False):
 
     # If specified, save output list:
     if cont_list:
-        with io.open(pdf_filename[:-4] + '_contratos.txt', "w", encoding='utf8') as f:
+        with open(pdf_filename[:-4] + '_contratos.txt', "w", encoding='utf8') as f:
             f.write(contracts)
 
     return contracts
