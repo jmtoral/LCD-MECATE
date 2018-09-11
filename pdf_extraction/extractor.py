@@ -19,7 +19,7 @@ def pdf_to_text(pdf_filename, to_text=False):
     """
 
     # Load PDF into raw text:
-    with io.open(pdf_filename, "rb", encoding='utf8') as f:
+    with io.open(pdf_filename, "rb") as f:
         pdf = pdftotext.PDF(f)
         pdf_txt = "\n\n".join(pdf)
 
@@ -70,4 +70,4 @@ def extract_from_dir(dir_path, to_text=False, con_list=False):
 if __name__ == '__main__':
     # pdf_list = list_pdfs("../y_2017")
     # print(extract_contracts(pdf_list[0]))
-    print(extract_from_dir("../y_2017", to_text=True, con_list=True))
+    print(extract_from_dir(path_to_pdfs, to_text=True, con_list=True))
