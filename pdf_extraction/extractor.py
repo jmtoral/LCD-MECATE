@@ -1,6 +1,5 @@
 from glob import glob
 import pdftotext
-import codecs
 import re
 
 # Global:
@@ -19,13 +18,13 @@ def pdf_to_text(pdf_filename, to_text=False):
     """
 
     # Load PDF into raw text:
-    with codecs.open(pdf_filename, "r", encoding='utf8') as f:
+    with open(pdf_filename, "rb") as f:
         pdf = pdftotext.PDF(f)
         pdf_txt = "\n\n".join(pdf)
 
     # If specified, save PDF into txt:
     if to_text:
-        with codecs.open(pdf_filename[:-4] + '.txt', "w", encoding='utf8') as f:
+        with open(pdf_filename[:-4] + '.txt', "w") as f:
             f.write(pdf_txt)
     return pdf_txt
 
@@ -44,7 +43,7 @@ def extract_contracts(pdf_filename, to_text=False, cont_list=False):
 
     # If specified, save output list:
     if cont_list:
-        with codecs.open(pdf_filename[:-4] + '_contratos.txt', "w", encoding='utf8') as f:
+        with open(pdf_filename[:-4] + '_contratos.txt', "w") as f:
             f.write(contracts)
 
     return contracts
@@ -55,7 +54,8 @@ def extract_from_dir(dir_path, to_text=False, con_list=False):
 
     pdfs_w_contracts = 0
     pdf_list = list_pdfs(dir_path)
-    for pdf in pdf_list:
+    for i, pdf in enumerate(pdf_list):
+        print("PDF {} from {}.".format(i, len(pdf_list)))
         contracts = extract_contracts(pdf, to_text, con_list)
         if len(contracts) > 0:
             pdfs_w_contracts += 1
