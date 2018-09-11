@@ -33,7 +33,7 @@ def extract_contracts(pdf_filename, to_text=False, cont_list=False):
     """Extract contract codes from given PDFs."""
 
     # Set contract (regular expression) rule:
-    regex = r'[[:alpha:]]+\/[[:alpha:]]+\/[[:alnum:]]+\/[[:alnum:]]+\/[[:alnum:]]+'
+    regex = r'[A-Za-z]+\/[A-Za-z]+\/[A-Za-z0-9]+\/[A-Za-z0-9]+\/[A-Za-z0-9]+'
     extractor = re.compile(regex)
 
     # Find all contracts in PDF file:
@@ -67,6 +67,6 @@ def extract_from_dir(dir_path, to_text=False, con_list=False):
 
 
 if __name__ == '__main__':
-    # pdf_list = list_pdfs("..")
+    # pdf_list = list_pdfs("../y_2017")
     # print(extract_contracts(pdf_list[0]))
-    print(extract_from_dir(".."))
+    print(extract_from_dir("../y_2017", con_list=True))
