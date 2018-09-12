@@ -41,12 +41,14 @@ def extract_from_contracts(pdf_filename, to_text=False, cont_list=False):
 
     # Find all contracts in PDF file:
     pdf_txt = pdf_to_text(pdf_filename, to_text)
+    pdf_txt = re.sub('"', '\"', pdf_txt)
+    pdf_txt = re.sub("'", "\'", pdf_txt)
     contracts_raw = contract_ext.findall(pdf_txt)
     meta_raw = meta_ext.findall(pdf_txt)
     contracts = list(set(contracts_raw))
     try:
         meta = [item for item in meta_raw[0]]
-    except:
+    except Exception as e:
         meta = []
 
     # If specified, save output list:
@@ -61,10 +63,10 @@ def extract_from_dir(dir_path, to_text=False, con_list=False, out="out.csv"):
     """Contracts extractor from given directory."""
 
     # Create empty DataFrame:
-    # columnas = ['id_auditoria', 'numero', 'nombre_archivo', 'tipo_auditoria',
-    #             'contratos', 'contenido_crudo']
     columnas = ['id_auditoria', 'numero', 'nombre_archivo', 'tipo_auditoria',
-                'contratos']
+                'contratos', 'contenido_crudo']
+    # columnas = ['id_auditoria', 'numero', 'nombre_archivo', 'tipo_auditoria',
+    #             'contratos']
     data = []
 
     # Iterate over pdfs:
@@ -74,13 +76,12 @@ def extract_from_dir(dir_path, to_text=False, con_list=False, out="out.csv"):
         print("PDF {} from {}.".format(i, len(pdf_list)))
         meta, contracts, pdf_txt = extract_from_contracts(
             pdf, to_text, con_list)
-        pdf_txt = re.sub('"', '\"', pdf_txt)
         try:
-            # data.append([meta[1], meta[2], pdf, meta[0], contracts, pdf_txt])
-            data.append([meta[1], meta[2], pdf, meta[0], contracts])
+            data.append([meta[1], meta[2], pdf, meta[0], contracts, pdf_txt])
+            # data.append([meta[1], meta[2], pdf, meta[0], contracts])
             if len(contracts) > 0:
                 pdfs_w_contracts += 1
-        except:
+        except Exception as e:
             # data.append([None, None, pdf, None, contracts, pdf_txt])
             data.append([None, None, pdf, None, contracts])
 
